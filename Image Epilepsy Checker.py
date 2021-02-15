@@ -73,7 +73,8 @@ def is_image_different(img1, img2):
     img1 = f"./GIF/{img1}"
     img2 = f"./GIF/{img2}"
     hash0 = imagehash.average_hash(Image.open(img1)) 
-    hash1 = imagehash.average_hash(Image.open(img2)) 
+    hash1 = imagehash.average_hash(Image.open(img2))
+    #print(hash0 - hash1)
     cutoff = 3 #lol what the fuck is a cutoff
 
     if hash0 - hash1 <= cutoff: #hash difference compare to cutoff
@@ -119,6 +120,7 @@ def compare_frames(frame_path): #framepath should be ./GIF
         else:
             f_count += 1
     
+    print("True: Frame 'n' and frame 'n+1' are noticeably different.\nFalse: Frame 'n' and farme 'n+1' are similar enough.")
     print(f"True Count: {t_count}\nFalse Count: {f_count}")
     
     end_arr = [frame_diff_arr, t_count, f_count]
@@ -126,8 +128,33 @@ def compare_frames(frame_path): #framepath should be ./GIF
     return end_arr
 
 def main():
-    FILENAME = input("Enter gif file name (exclude .gif extension): ")
-    FILENAME += ".gif"
+    import time
+
+    if os.path.exists("./GIF/"):
+        pass
+    else:
+        try:
+            os.mkdir("./GIF/")
+        except OSError:
+            print("Creation of GIF directory (for the frames) failed. Program closing in 5 seconds.")
+            time.sleep(5)
+            exit()
+        else:
+            print("GIF directory successfully made.")
+            time.sleep(2)
+
+    while True:
+        try:
+            FILENAME = input("Enter GIF file name (exclude .gif extension): ")
+            FILENAME += ".gif"
+            
+            if os.path.exists(FILENAME):
+                break
+            else:
+                raise FileNotFoundError
+        except:
+            print("Please enter a valid file name.")
+
     path = "./GIF/"
     processImage(FILENAME)
     img_obj = Image.open(FILENAME)
@@ -137,26 +164,40 @@ def main():
     temp = []
     count = 0
     string = "GIF is most likely alright."
+    if len(c[0]) < 4:
+        string = "GIF too short. GIF should be at least 4+ frames. (Also, if it's this short, you can just manually evaluate it.)"
+
     for i in c[0]:
         if count != 4:
             temp.append(i)
             count += 1
 
         elif count == 4:
-            if (temp[0] == True and (temp[0] == temp[1] == temp[2] == temp[3])): print("GIF has at least 4 frames where frames are too different from each other (cutoff=3).")
-            if (avg_frame_time < 0.3333): print("GIF average frame time is faster than set boundary of 0.3333s.")
-            if (c[1] / c[2] > 0.34): print(f"GIF True:False ratio: {c[1] / c[2]}, exceeds 34% limit.")
-            if (temp[0] == True and (temp[0] == temp[1] == temp[2] == temp[3]) and (avg_frame_time < 0.3333)) or (c[1] / c[2] > 0.34):
+            ratio_limit = 0.45
+            frame_time_limit = 0.3333
+            series_check = (temp[0] == True and (temp[0] == temp[1] == temp[2] == temp[3]))
+            
+            try:
+                a = c[1] / (c[1] + c[2])
+            except ZeroDivisionError:
+                a = 1
+
+            if series_check: print("GIF has at least 4 frames where frames are too different from each other (cutoff=3).")
+            if (series_check and (avg_frame_time < frame_time_limit)) or (a > ratio_limit):
                 string = "GIF is most likely epileptic. Please proceed with manual evaluation."
                 break
             else:
                 temp = []
                 count = 0
     
+    if (avg_frame_time < frame_time_limit): print("GIF average frame time is faster than set boundary of 0.3333s.")
+    if (a > ratio_limit): print(f"GIF True:False ratio: {a}, exceeds 34% limit.")
+    
     for f in os.listdir(path):
         os.remove(path + f)
 
     print(string)
+    input("Please press enter to exit.\n")
 
 if __name__ == "__main__":
     main()
