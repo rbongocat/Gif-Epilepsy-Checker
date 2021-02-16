@@ -1,5 +1,6 @@
 import os
 import imagehash
+import numpy as np
 from PIL import Image
 
 def analyseImage(path):
@@ -68,6 +69,10 @@ def get_avg_fps(PIL_Image_object):
             print(f"Average time per frame: {duration / (frames * 1000)}s")
             return duration / (frames * 1000)
     return None
+
+def image_color_palette():
+    
+    pass
 
 def is_image_different(img1, img2):
     img1 = f"./GIF/{img1}"
@@ -182,7 +187,7 @@ def main():
             except ZeroDivisionError:
                 a = 1
 
-            if series_check: print("GIF has at least 4 frames where frames are too different from each other (cutoff=3).")
+            if series_check: print(f"GIF has at least {count} frames where frames are too different from each other (cutoff=3).")
             if (series_check and (avg_frame_time < frame_time_limit)) or (a > ratio_limit):
                 string = "GIF is most likely epileptic. Please proceed with manual evaluation."
                 break
@@ -190,8 +195,8 @@ def main():
                 temp = []
                 count = 0
     
-    if (avg_frame_time < frame_time_limit): print("GIF average frame time is faster than set boundary of 0.3333s.")
-    if (a > ratio_limit): print(f"GIF True:False ratio: {a}, exceeds 34% limit.")
+    if (avg_frame_time < frame_time_limit): print(f"GIF average frame time is faster than set boundary of {frame_time_limit}s.")
+    if (a > ratio_limit): print(f"GIF True:False ratio: {a}, exceeds {ratio_limit}% limit.")
     
     for f in os.listdir(path):
         os.remove(path + f)
