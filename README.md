@@ -5,7 +5,9 @@ Program checks for if GIF is potentially epileptic.
 Requirements:
 1) Python 3 (Recommended 3.6+)
 2) PIL and imagehash library (pip install pillow, pip install imagehash).
-3) A folder called "GIF" (case sensitive) in the same directory as the .py file.
+
+
+The program will now automatically create a folder called GIF in the directory the .py file is in.
 
 
 Steps:
