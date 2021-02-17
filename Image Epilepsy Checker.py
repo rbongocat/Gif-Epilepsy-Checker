@@ -168,6 +168,9 @@ def main():
     
     temp = []
     count = 0
+    ratio_limit = 0.45
+    frame_time_limit = 0.3333
+    a = 0
     string = "GIF is most likely alright."
     if len(c[0]) < 4:
         string = "GIF too short. GIF should be at least 4+ frames. (Also, if it's this short, you can just manually evaluate it.)"
@@ -178,14 +181,12 @@ def main():
             count += 1
 
         elif count == 4:
-            ratio_limit = 0.45
-            frame_time_limit = 0.3333
             series_check = (temp[0] == True and (temp[0] == temp[1] == temp[2] == temp[3]))
             
             try:
                 a = c[1] / (c[1] + c[2])
             except ZeroDivisionError:
-                a = 1
+                pass
 
             if series_check: print(f"GIF has at least {count} frames where frames are too different from each other (cutoff=3).")
             if (series_check and (avg_frame_time < frame_time_limit)) or (a > ratio_limit):
