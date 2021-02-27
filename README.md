@@ -1,6 +1,4 @@
-# gif-flashy-checker
-
-Program checks for if GIF is potentially epileptic.
+# Program checks for if GIF is potentially epileptic.
 
 Requirements:
 1) Python 3 (Recommended 3.6+)
