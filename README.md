@@ -2,15 +2,12 @@
 
 Requirements:
 1) Python 3 (Recommended 3.6+)
-2) PIL and imagehash library (pip install pillow, pip install imagehash).
-
-
-The program will now automatically create a folder called GIF in the directory the .py file is in.
-
+2) Library Requirements: PIL, imagehash, numpy
 
 Steps:
 1) Put the .gif file in the same directory as the .py file.
 2) Run the .py file.
+2.5) If there is no folder called "GIF" in the same directory of the .py file, the program will attempt to make one.
 3) Input the name of the .gif file.
 4) Read output.
 
