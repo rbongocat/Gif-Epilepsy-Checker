@@ -26,17 +26,13 @@ def analyseImage(path):
 def processImage(path):
 
     mode = analyseImage(path)['mode']
-    
     im = Image.open(path)
-
     i = 0
     p = im.getpalette()
     last_frame = im.convert('RGBA')
     
     try:
         while True:
-            #print("saving %s (%s) frame %d, %s %s" % (path, mode, i, im.size, im.tile))
-
             if not im.getpalette():
                 im.putpalette(p)
             
@@ -47,7 +43,6 @@ def processImage(path):
             
             new_frame.paste(im, (0,0), im.convert('RGBA'))
             new_frame.save('./GIF/%d.png' % (i+1), 'PNG')
-            #new_frame.save('./GIF/%s-%d.png' % (''.join(os.path.basename(path).split('.')[:-1]), i), 'PNG')
 
             i += 1
             last_frame = new_frame
@@ -72,15 +67,14 @@ def get_avg_fps(PIL_Image_object):
 
 def image_color_palette():
     
-    pass
+    pass 
 
 def is_image_different(img1, img2):
     img1 = f"./GIF/{img1}"
     img2 = f"./GIF/{img2}"
     hash0 = imagehash.average_hash(Image.open(img1)) 
     hash1 = imagehash.average_hash(Image.open(img2))
-    #print(hash0 - hash1)
-    cutoff = 3 #lol what the fuck is a cutoff
+    cutoff = 3
 
     if hash0 - hash1 <= cutoff: #hash difference compare to cutoff
         return False #false b/c images are similar
