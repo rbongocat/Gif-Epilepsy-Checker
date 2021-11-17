@@ -12,7 +12,7 @@ Steps:
 4) Read output.
 
 
-Credits:
+Resources Used
 1) [Finding image hash difference using imagehash](https://stackoverflow.com/questions/52736154/how-to-check-similarity-of-two-images-that-have-different-pixelization)
 2) [Extracting each frame of the gif](https://gist.github.com/BigglesZX/4016539)
 3) [Calculating frame times](https://stackoverflow.com/questions/53364769/get-frames-per-second-of-a-gif-in-python)
